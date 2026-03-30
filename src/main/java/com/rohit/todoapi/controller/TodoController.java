@@ -2,7 +2,7 @@ package com.rohit.todoapi.controller;
 
 import com.rohit.todoapi.entity.Todo;
 import com.rohit.todoapi.service.TodoService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,31 +17,35 @@ public class TodoController {
             this.todoService = todoService;
         }
 
+        // POST /tosos
         @PostMapping
-        public ResponseEntity<Todo> createTodo(@RequestBody Todo todo) {
-                // later i can use DTOs @RequestBody CreateTodoRequest request
-                return ResponseEntity.ok(todoService.createTodo(todo));
+        @ResponseStatus(HttpStatus.CREATED)
+        public Todo createTodo(@RequestBody Todo todo) {
+                return todoService.createTodo(todo);
         }
 
+        // GET /todos
         @GetMapping
-        public ResponseEntity<List<Todo>> getAllTodos() {
-                return ResponseEntity.ok(todoService.getAllTodos());
+        public List<Todo> getAllTodos() {
+                return todoService.getAllTodos();
         }
 
+        // GET /todos/{id}
         @GetMapping("/{id}")
-        public ResponseEntity<Todo> getTodoById(@PathVariable Long id) {
-                return ResponseEntity.ok(todoService.getTodoById(id));
+        public Todo getTodoById(@PathVariable Long id) {
+                return todoService.getTodoById(id);
         }
 
+        // PUT /todos/{id}
         @PutMapping("/{id}")
-        public ResponseEntity<Todo> updateTodo(@PathVariable Long id, @RequestBody Todo todo) {
-                // later i can use DTOs @RequestBody UpdateTodoRequest request
-                return ResponseEntity.ok(todoService.updateTodo(id, todo));
+        public Todo updateTodo(@PathVariable Long id, @RequestBody Todo todo) {
+                return todoService.updateTodo(id, todo);
         }
 
+        // DELETE /todos/{id}
         @DeleteMapping("/{id}")
-        public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
+        @ResponseStatus(HttpStatus.NO_CONTENT)
+        public void deleteTodo(@PathVariable Long id) {
                 todoService.deleteTodo(id);
-                return ResponseEntity.ok().build();
         }
 }
